@@ -1,9 +1,11 @@
 import time
+import random
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 
 chrome_options = Options()
 chrome_options.add_argument('--headless')
@@ -24,13 +26,38 @@ driver = webdriver.Chrome(options=chrome_options)
 driver.get("https://www.instagram.com/accounts/login/")
 
 # Esperar até que o campo de nome de usuário esteja presente na página
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "username")))
+username_input = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[name='username']")))
+
+# Inserir usuário com um atraso e movimento de mouse
+for char in "seyzalel":
+    username_input.send_keys(char)
+    time.sleep(random.uniform(0.1, 0.3))
+    ActionChains(driver).move_by_offset(random.uniform(1, 5), random.uniform(1, 5)).perform()
+
+# Esperar um pouco antes de inserir a senha
+time.sleep(random.uniform(1, 2))
+
+# Inserir senha com um atraso e movimento de mouse
+password_input = driver.find_element(By.CSS_SELECTOR, "input[name='password']")
+for char in "Sey17zalel17@$":
+    password_input.send_keys(char)
+    time.sleep(random.uniform(0.1, 0.3))
+    ActionChains(driver).move_by_offset(random.uniform(1, 5), random.uniform(1, 5)).perform()
+
+# Esperar um pouco antes de clicar no botão de login
+time.sleep(random.uniform(1, 2))
+
+# Localizar e clicar no botão de login com um pequeno desvio no movimento do mouse
+login_button = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
+ActionChains(driver).move_to_element(login_button).perform()
+time.sleep(random.uniform(0.5, 1))
+login_button.click()
 
 # Imprimir mensagem de sucesso
-print("Página de login acessada com sucesso.")
+print("Login realizado com sucesso.")
 
-# Aguardar 5 segundos
-time.sleep(5)
+# Aguardar um tempo aleatório antes de fechar o navegador
+time.sleep(random.uniform(3, 5))
 
 # Fechar o navegador
 driver.quit()
