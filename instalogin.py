@@ -48,17 +48,12 @@ try:
 
     print("Login realizado com sucesso!")
 
-    # Espere 5 segundos após o login
-    time.sleep(5)
+    # Espere até que o elemento SVG com aria-label="Direct" esteja presente na página
+    direct_icon = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, '//svg[@aria-label="Direct"]'))
+    )
 
-    # Altere para o objeto driver após o login
-    direct_icon = driver.find_elements_by_xpath('//svg[@aria-label="Direct"]')
-
-    # Se o ícone do Direct estiver presente, imprima mensagem de login bem-sucedido
-    if direct_icon:
-        print("Login bem-sucedido!")
-    else:
-        print("Login não foi bem-sucedido.")
+    print("Login bem-sucedido!")
 
 except TimeoutException:
     print("Elementos de login não encontrados!")
