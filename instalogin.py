@@ -22,7 +22,7 @@ chrome_options.add_argument('--allow-running-insecure-content')
 
 driver = webdriver.Chrome(options=chrome_options)
 
-# Acessar a página
+# Acessar a página de login
 driver.get("https://www.instagram.com/accounts/login/")
 
 # Esperar até que o campo de nome de usuário esteja presente na página
@@ -53,8 +53,18 @@ ActionChains(driver).move_to_element(login_button).perform()
 time.sleep(random.uniform(0.5, 1))
 login_button.click()
 
-# Imprimir mensagem de sucesso
-print("Login realizado com sucesso.")
+# Esperar até que a URL do perfil seja carregada
+WebDriverWait(driver, 10).until(EC.url_to_be("https://www.instagram.com/"))
+
+# Acessar a página do perfil específico
+driver.get("https://www.instagram.com/abra_paola/")
+
+# Esperar até que o elemento de opções esteja presente na página do perfil
+try:
+    options_icon = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "svg[aria-label='Opções']")))
+    print("Acessou a página com sucesso.")
+except:
+    print("Erro: A página não foi carregada corretamente ou o elemento não está presente.")
 
 # Aguardar um tempo aleatório antes de fechar o navegador
 time.sleep(random.uniform(3, 5))
