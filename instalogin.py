@@ -1,3 +1,4 @@
+import time
 from selenium.common.exceptions import TimeoutException
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -5,8 +6,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+# Configurações do Chrome
 chrome_options = Options()
-chrome_options.add_argument('--headless')
+chrome_options.add_argument('--headless')  # Execução sem interface gráfica (headless)
 chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3')
 chrome_options.add_argument('--window-size=1920,1080')
 chrome_options.add_argument('--disable-notifications')
@@ -18,32 +20,49 @@ chrome_options.add_argument('--disable-extensions')
 chrome_options.add_argument('--disable-web-security') 
 chrome_options.add_argument('--allow-running-insecure-content')
 
+# Inicializa o WebDriver do Chrome
 driver = webdriver.Chrome(options=chrome_options)
 
 try:
-    driver.get("https://www.instagram.com/")
-    
-    # Espera até que o botão "Entrar" seja clicável
-    entrar = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, '//div[@class="_ap3a _aaco _aacw _aad0 _aad6"][contains(text(), "Entrar")]'))
+    # Abre a página de login do Instagram
+    driver.get("https://www.instagram.com/accounts/login/")
+
+    # Verifica se o título da página contém "Entrar"
+    WebDriverWait(driver, 10).until(
+        EC.title_contains("Entrar")
     )
-    entrar.click()
-    
-    # Espera até que o campo de nome de usuário seja visível
-    input_username = WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located((By.XPATH, '//input[@name="username"]'))
+    print("Página de login acessada com sucesso.")
+
+    # Preenche o campo de username
+    username_input = WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located((By.NAME, 'username'))
     )
-    
-    if input_username:
-        print("O botão foi clicado com sucesso e o input foi encontrado.")
-    else:
-        print("Falha ao clicar no botão ou o input não foi encontrado.")
-    
-except TimeoutException:
-    print("Tempo limite excedido ao aguardar o botão ou o input.")
-    
+    username_input.send_keys("seyzalel")  # Substitua 'seu_usuario' pelo seu nome de usuário
+
+    # Preenche o campo de senha
+    password_input = WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located((By.NAME, 'password'))
+    )
+    password_input.send_keys("Sey17zalel17@$")  # Substitua 'sua_senha' pela sua senha
+
+    # Clica no botão de login
+    login_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, '//button[@type="submit"]'))
+    )
+    login_button.click()
+
+    # Aguarda até que o título da página não contenha mais "Entrar" (ou seja, apenas "Instagram")
+    WebDriverWait(driver, 10).until(
+        EC.title_contains("Instagram")
+    )
+    print("Login realizado com sucesso.")
+
+    # Aguarda 7 segundos antes de fechar o navegador
+    time.sleep(7)
+
 except Exception as e:
     print("Ocorreu um erro:", e)
-    
+
 finally:
+    # Fecha o navegador ao finalizar
     driver.quit()
