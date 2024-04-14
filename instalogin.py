@@ -37,7 +37,7 @@ try:
     username_input = WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located((By.NAME, 'username'))
     )
-    username_input.send_keys("seyzalel")  # Substitua 'seu_usuario' pelo seu nome de usuário
+    username_input.send_keys("abra_paola")  # Substitua 'seu_usuario' pelo seu nome de usuário
 
     # Preenche o campo de senha
     password_input = WebDriverWait(driver, 10).until(
@@ -51,11 +51,16 @@ try:
     )
     login_button.click()
 
-    # Aguarda até que o título da página não contenha mais "Entrar" (ou seja, apenas "Instagram")
-    WebDriverWait(driver, 10).until(
-        EC.title_contains("Instagram")
+    # Aguarda até que a página seja carregada (título não contém "Entrar")
+    WebDriverWait(driver, 10).until_not(
+        EC.title_contains("Entrar")
     )
-    print("Login realizado com sucesso.")
+    
+    # Verifica se o título da página contém apenas "Instagram"
+    if "Instagram" in driver.title and not "Entrar" in driver.title:
+        print("Login realizado com sucesso.")
+    else:
+        raise Exception("Erro ao realizar o login.")
 
     # Aguarda 7 segundos antes de fechar o navegador
     time.sleep(7)
