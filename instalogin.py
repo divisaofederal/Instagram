@@ -23,8 +23,8 @@ driver = webdriver.Chrome(options=chrome_options)
 # Acessar a página
 driver.get("https://www.instagram.com/accounts/login/")
 
-# Esperar até que o título contenha "Entrar"
-WebDriverWait(driver, 10).until(EC.title_contains("Entrar"))
+# Esperar até que o campo de nome de usuário esteja presente na página
+WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "username")))
 
 # Imprimir mensagem de sucesso
 print("Página de login acessada com sucesso.")
