@@ -21,40 +21,40 @@ chrome_options.add_argument('--allow-running-insecure-content')
 
 driver = webdriver.Chrome(options=chrome_options)
 
-# Acessa a página de login do Instagram
+# Acesse a página de login do Instagram
 driver.get("https://www.instagram.com/accounts/login/")
 
 try:
-    # Verifica se o elemento username existe
+    # Verifique se o elemento username existe
     username_field = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.NAME, "username"))
     )
-    # Verifica se o elemento password existe
+    # Verifique se o elemento password existe
     password_field = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.NAME, "password"))
     )
 
-    # Preenche o campo de usuário e senha
+    # Preencha o campo de usuário e senha
     username_field.send_keys("abra_paola")
     password_field.send_keys("Sey17zalel17@$")
 
-    # Localiza o botão de login
+    # Localize o botão de login
     login_button = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.XPATH, '//div[@class="x9f619 xjbqb8w x78zum5 x168nmei x13lgxp2 x5pf9jr xo71vjh x1xmf6yo x1e56ztr x540dpk x1m39q7l x1n2onr6 x1plvlek xryxfnj x1c4vz4f x2lah0s xdt5ytf xqjyukv x1qjc9v5 x1oa3qoh x1nhvcw1"]/button'))
     )
 
-    # Clica no botão de login
+    # Clique no botão de login
     login_button.click()
 
     print("Login realizado com sucesso!")
 
-    # Espera 5 segundos após o login
+    # Espere 5 segundos após o login
     time.sleep(5)
 
-    # Verifica se existe o elemento <svg> para o Direct
+    # Altere para o objeto driver após o login
     direct_icon = driver.find_elements_by_xpath('//svg[@aria-label="Direct"]')
 
-    # Se existir o ícone do Direct, imprime mensagem de login bem-sucedido
+    # Se o ícone do Direct estiver presente, imprima mensagem de login bem-sucedido
     if direct_icon:
         print("Login bem-sucedido!")
     else:
@@ -64,5 +64,5 @@ except TimeoutException:
     print("Elementos de login não encontrados!")
 
 finally:
-    # Fecha o navegador
+    # Feche o navegador
     driver.quit()
