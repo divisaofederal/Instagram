@@ -38,3 +38,12 @@ try:
     print("O botão foi clicado com sucesso e o input foi encontrado.")
   else:
     print("Falha ao clicar no botão ou o input não foi encontrado.")
+    
+except TimeoutException:
+  print("Tempo limite excedido ao aguardar o botão ou o input.")
+
+except Exception as e:
+  print("Ocorreu um erro:", e)
+
+finally:
+  driver.quit()
