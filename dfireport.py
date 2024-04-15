@@ -23,14 +23,12 @@ driver = webdriver.Chrome(options=chrome_options)
 # Acessar a página específica do Help Center do Instagram
 driver.get("https://help.instagram.com/contact/723586364339719")
 
-# Esperar até que o título da página contenha "Central de Ajuda do Instagram"
-WebDriverWait(driver, 10).until(EC.title_contains("Central de Ajuda do Instagram"))
-
-# Verificar se o título da página contém "Central de Ajuda do Instagram"
-if "Central de Ajuda do Instagram" in driver.title:
+# Esperar até que o elemento esteja presente na página
+try:
+    input_element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[name='Field258021274378282']")))
     print("Acessou a página com sucesso.")
-else:
-    print("Erro: O título da página não contém 'Central de Ajuda do Instagram'.")
+except:
+    print("Erro: O elemento não está presente na página.")
 
 # Fechar o navegador
 driver.quit()
