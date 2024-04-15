@@ -26,21 +26,23 @@ driver = webdriver.Chrome(options=chrome_options)
 # URL do site a ser acessado
 url = "https://help.instagram.com/"
 
+# Configura a espera implícita para 10 segundos
+driver.implicitly_wait(10)
+
 try:
     # Acessa a URL
     driver.get(url)
     
-    # Aguarda até 20 segundos para o elemento estar presente na página
-    element_present = EC.presence_of_element_located((By.CSS_SELECTOR, 'input._52ji._56bg._55wq._6il8'))
-    WebDriverWait(driver, 20).until(element_present)
+    # Localiza o elemento pelo seletor CSS
+    search_input = driver.find_element(By.CSS_SELECTOR, 'input._52ji._56bg._55wq._6il8')
     
     # Se o elemento estiver presente, imprime a mensagem de sucesso
     print("Página acessada com sucesso.")
-    print("Elemento localizado:", driver.find_element_by_css_selector('input._52ji._56bg._55wq._6il8'))
+    print("Elemento localizado:", search_input)
     
-except TimeoutException:
-    # Caso o elemento não seja encontrado dentro do tempo especificado
-    print("Tempo limite excedido. O elemento não foi localizado.")
+except Exception as e:
+    # Em caso de erro, imprime a mensagem de falha
+    print("Falha ao localizar o elemento:", e)
 
 finally:
     # Fecha o navegador
