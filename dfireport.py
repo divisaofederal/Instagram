@@ -1,15 +1,15 @@
 import time
+import random
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.action_chains import ActionChains
 
-# Configurações do Chrome Headless
 chrome_options = Options()
 chrome_options.add_argument('--headless')
-chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.100 Safari/537.36')
+chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3')
 chrome_options.add_argument('--window-size=1920,1080')
 chrome_options.add_argument('--disable-notifications')
 chrome_options.add_argument('--disable-infobars')
@@ -20,30 +20,20 @@ chrome_options.add_argument('--disable-extensions')
 chrome_options.add_argument('--disable-web-security') 
 chrome_options.add_argument('--allow-running-insecure-content')
 
-# Inicializa o WebDriver
 driver = webdriver.Chrome(options=chrome_options)
 
-# URL do site a ser acessado
-url = "https://help.instagram.com/"
-
-# Configura a espera implícita para 10 segundos
-driver.implicitly_wait(10)
-
 try:
-    # Acessa a URL
-    driver.get(url)
-    
-    # Localiza o elemento pelo seletor CSS
-    search_input = driver.find_element(By.CSS_SELECTOR, 'input._52ji._56bg._55wq._6il8')
-    
-    # Se o elemento estiver presente, imprime a mensagem de sucesso
+    # Carregar a página
+    driver.get("https://help.instagram.com/")
+
+    # Esperar até que o elemento seja localizado
+    search_input = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="Pesquisar"]'))
+    )
+
+    # Se o elemento for encontrado, imprime a mensagem
     print("Página acessada com sucesso.")
-    print("Elemento localizado:", search_input)
-    
-except Exception as e:
-    # Em caso de erro, imprime a mensagem de falha
-    print("Falha ao localizar o elemento:", e)
 
 finally:
-    # Fecha o navegador
+    # Fechar o navegador
     driver.quit()
