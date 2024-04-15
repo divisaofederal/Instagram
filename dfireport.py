@@ -1,11 +1,9 @@
 import time
-import random
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
 
 chrome_options = Options()
 chrome_options.add_argument('--headless')
@@ -22,18 +20,17 @@ chrome_options.add_argument('--allow-running-insecure-content')
 
 driver = webdriver.Chrome(options=chrome_options)
 
-try:
-    # Carregar a página
-    driver.get("https://help.instagram.com/")
+# Acessar a página do Help Center do Instagram
+driver.get("https://help.instagram.com/")
 
-    # Esperar até que o elemento seja localizado
-    search_input = WebDriverWait(driver, 20).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, 'input[aria-label="Pesquisar na Central de Ajuda"]'))
-    )
+# Esperar até que o título da página contenha "Help Center"
+WebDriverWait(driver, 10).until(EC.title_contains("Help Center"))
 
-    # Se o elemento for encontrado, imprime a mensagem
-    print("Página acessada com sucesso.")
+# Verificar se o título da página contém "Help Center"
+if "Help Center" in driver.title:
+    print("Acessou a página com sucesso.")
+else:
+    print("Erro: O título da página não contém 'Help Center'.")
 
-finally:
-    # Fechar o navegador
-    driver.quit()
+# Fechar o navegador
+driver.quit()
