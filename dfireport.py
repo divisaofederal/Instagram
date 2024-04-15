@@ -27,8 +27,8 @@ try:
     driver.get("https://help.instagram.com/")
 
     # Esperar até que o elemento seja localizado
-    search_input = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="Pesquisar"]'))
+    search_input = WebDriverWait(driver, 20).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'input[aria-label="Pesquisar na Central de Ajuda"]'))
     )
 
     # Se o elemento for encontrado, imprime a mensagem
