@@ -16,13 +16,11 @@ def simulate_human_behavior(driver):
     """
     Simula comportamentos humanos básicos para reduzir as chances de detecção.
     """
-    # Movimento aleatório do mouse
+    # Movimento aleatório do mouse e scroll
     action = ActionChains(driver)
     start_element = driver.find_element(By.TAG_NAME, 'body')
     action.move_to_element(start_element).perform()
     time.sleep(random.uniform(1, 2))
-    
-    # Scroll aleatório na página
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight/4);")
     time.sleep(random.uniform(1, 2))
     driver.execute_script("window.scrollTo(0, -document.body.scrollHeight/4);")
@@ -40,31 +38,28 @@ def login_instagram(username, password):
     # Inicializa o driver do navegador com as opções definidas
     driver = webdriver.Chrome(options=options)
 
-    # Acessa a página de login do Instagram diretamente
+    # Acessa a página de login do Instagram
     driver.get("https://www.instagram.com/accounts/login/")
-
-    # Aguarda até que os campos de login estejam presentes
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "username")))
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "password")))
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "username"))).send_keys(username)
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "password"))).send_keys(password)
 
     simulate_human_behavior(driver)
 
-    # Encontra os campos de usuário e senha e os preenche
-    driver.find_element(By.NAME, "username").send_keys(username)
-    time.sleep(random.uniform(2, 4))
-    driver.find_element(By.NAME, "password").send_keys(password)
-
-    simulate_human_behavior(driver)
-
-    # Clicar no botão de login
-    login_button = driver.find_element(By.XPATH, "//button[@type='submit']")
-    action = ActionChains(driver)
-    action.move_to_element(login_button).click().perform()
-
-    # Espera por uma navegação ou por um tempo limite para considerar o login bem-sucedido
-    time.sleep(random.uniform(5, 8))
+    # Clica no botão de login e espera o login ser bem-sucedido
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))).click()
+    time.sleep(random.uniform(5, 8))  # Espera pela navegação após o login
     
     print("Login bem-sucedido!")
+
+    # Acessa a URL do perfil
+    profile_url = "https://www.instagram.com/margaridagoncalves662?igsh=MXVmd2w0ZXNtczRveA=="
+    driver.get(profile_url)
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "body")))  # Garante que a página carregou
+    
+    # Clica no botão "Seguir"
+    follow_button_xpath = "//div[contains(@class, 'x9f619')]"
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, follow_button_xpath))).click()
+    print("Clique em 'Seguir' realizado com sucesso.")
 
     # Fecha o navegador
     driver.quit()
