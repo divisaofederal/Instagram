@@ -30,13 +30,13 @@ try:
     # Acessa a URL
     driver.get(url)
     
-    # Aguarda até 10 segundos para o elemento estar presente na página
-    element_present = EC.presence_of_element_located((By.ID, 'u_0_197_cp'))
-    WebDriverWait(driver, 10).until(element_present)
+    # Aguarda até 20 segundos para o elemento estar presente na página
+    element_present = EC.presence_of_element_located((By.CSS_SELECTOR, 'input._52ji._56bg._55wq._6il8'))
+    WebDriverWait(driver, 20).until(element_present)
     
     # Se o elemento estiver presente, imprime a mensagem de sucesso
     print("Página acessada com sucesso.")
-    print("Elemento localizado:", driver.find_element_by_id('u_0_197_cp'))
+    print("Elemento localizado:", driver.find_element_by_css_selector('input._52ji._56bg._55wq._6il8'))
     
 except TimeoutException:
     # Caso o elemento não seja encontrado dentro do tempo especificado
